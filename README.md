@@ -68,13 +68,23 @@ https://github.com/thePlannerIvan/planners-form
 | 构思视频、写口播与画面内容 | `video-idea-system` |
 | 剪辑视频、制作字幕与成片 | `video-craft` |
 
-方案研讨、叙事和幻灯片文案所用的辅助能力，会随相关功能一起安装。日常在 **设置 → Planners Form** 中检查和更新已安装的 Skill 即可。
+方案研讨、叙事和幻灯片文案所用的辅助能力，会随相关功能一起安装。日常在 **设置 → Planners Form** 中直接安装或更新即可：安装与更新会取上游最新版本，不再需要等插件发版才能拿到 Skill 的修复。
+
+## 更新与排障
+
+**Skill 更新**：设置页每次安装或更新都取上游 `main` 的最新提交；检查更新只检查已安装项，单项失败不会影响其他项，也不会再被 GitHub API 限流打成整页红色。
+
+**插件自身更新**：插件版本行会显示当前版本、commit 与最新 Release。装了 DSH 提供插件管理服务的版本时可以点“更新插件”一键更新；没有该服务或当前是本地开发安装时，点“复制更新指令”，把生成的内容发给你的 Agent 执行官方 `plugin_manager` 工具或应用自带 CLI，更新完成后重启 DSH。
+
+> 从 0.1.x 升到 0.2.0 需要手工重装一次插件（插件页添加 GitHub 地址，或用应用自带 CLI）。旧版的检查更新仍可能被 GitHub 限流打成 403，新机制要在 0.2.0 里才生效；升级之后的自更新就不再有这个门槛。
+
+**遇到问题**：先点 **复制修复指令给 Agent**，把内容直接发给你正在用的 Agent。里面已经包含插件版本、DSH profile、安装方式、错误、最近日志、脱敏诊断快照和分场景修复步骤，Agent 可以据此自检自修，不需要联系作者，也不需要你手工翻目录。修复指令包含本机路径但不含令牌。如果 Agent 按指令仍无法修复，或在排查中发现可优化的点，指令末尾会要求把诊断书发送到 Lawyif@163.com。
 
 ## 使用前的小提示
 
 目前支持 **DSH 0.2.x**（声明 `^0.2.0-rc.2`；0.2.1-rc.1 已实测）。安装和下载配套功能需要联网。首次使用视频制作时，还需按 [Video Craft 安装说明](https://github.com/thePlannerIvan/video-craft/blob/main/install.md) 配置渲染工具。
 
-插件的新版本可在 [Releases](https://github.com/thePlannerIvan/planners-form/releases) 获取。遇到问题，欢迎在 [Issues](https://github.com/thePlannerIvan/planners-form/issues) 留下反馈。
+插件的新版本可在 [Releases](https://github.com/thePlannerIvan/planners-form/releases) 获取。反馈问题前，附上“复制修复指令给 Agent”生成的内容会更容易定位。
 
 ## 开源与作者
 

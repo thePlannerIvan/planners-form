@@ -1,10 +1,12 @@
 /**
  * Client half of dsh-review-dock.
  *
- * One native right-Sidebar tab. Its body is an opaque `sandbox="allow-scripts"`
+ * One native right-Sidebar tab. Its body is a `sandbox="allow-scripts allow-same-origin"`
  * iframe showing whatever page the surface names, plus the bridge that page
- * talks to. There is no review UI here on purpose: what is reviewed, how it is
- * displayed, and what a decision means all belong to the page itself.
+ * talks to. The page is same-origin with DSH so an embedded player (e.g. the
+ * HyperFrames engineering preview) can run; that also means a review page is
+ * trusted code. There is no review UI here on purpose: what is reviewed, how it
+ * is displayed, and what a decision means all belong to the page itself.
  *
  *   parent → frame   `contentWindow.postMessage(msg, '*')`
  *                    (`'null'` can never be a matching targetOrigin for an
@@ -477,9 +479,10 @@ globalThis.__ModuleLoader__?.load({
               ref: frameRef,
               key: `${sessionId}:${surface}`,
               src,
-              // No allow-same-origin: the Skill page gets an opaque origin and
-              // cannot reach this application's DOM, storage, or API.
-              sandbox: 'allow-scripts',
+              // Same-origin is required by embedded players that create their own
+              // same-origin iframe (HyperFrames player). This makes the review page
+              // trusted code: it can reach this application's DOM, storage, and API.
+              sandbox: 'allow-scripts allow-same-origin',
               title: 'review surface',
               style: { flex: 1, minHeight: 0, width: '100%', border: '0', background: '#fff' },
             }),

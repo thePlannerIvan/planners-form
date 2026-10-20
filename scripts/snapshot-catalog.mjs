@@ -1,7 +1,10 @@
+// Maintainer-only: regenerate catalog.json.
+//
+// 0.2.0 stops pinning revisions. Installs and updates resolve the repository's
+// current `main` commit at the moment the user acts (lib/upstream.js), so the
+// catalog only carries the metadata the settings page renders: which Skills
+// exist, how they depend on each other, and which are public.
 import { writeFile } from 'node:fs/promises';
-import { execFile } from 'node:child_process';
-import { promisify } from 'node:util';
-const exec = promisify(execFile);
 const entries = [
  ['planners-review-core','审阅核心','公共审阅通信与页面宿主',[],true],
  ['planners-source-index','来源索引','保存资料来源与定位',[],true],
@@ -20,14 +23,6 @@ const entries = [
  ['video-craft','视频制作','剪辑、字幕与成片审阅；渲染工具按安装文档配置',['planners-review-core'],false],
 ];
 export const entriesForRelease = entries;
-const results = await Promise.allSettled(entries.map(async ([id,title,description,dependencies,internal,runtime,repo=id]) => {
- const { stdout } = await exec('git',['ls-remote',`https://github.com/thePlannerIvan/${repo}.git`,'refs/heads/main'],{timeout:45000,env:{...process.env,GIT_TERMINAL_PROMPT:'0'}});
- const revision=stdout.split(/\s/)[0];
- if(!/^[a-f0-9]{40}$/.test(revision)) throw new Error(`No main revision: ${id}`);
- return {id,title,description,dependencies,internal,hidden:['slide-copy','storytelling','sparkling'].includes(id),runtime:runtime||null,repository:`thePlannerIvan/${repo}`,revision,channel:'main',available:true};
-}));
-const failures=results.filter(r=>r.status==='rejected');
-if(failures.length) { console.error(failures.map(r=>r.reason.message));process.exit(1); }
-const packages=results.map(r=>r.value);
-await writeFile(new URL('../catalog.json',import.meta.url),JSON.stringify({schema:1,generatedAt:new Date().toISOString(),packages},null,2)+'\n');
-console.log(`Pinned ${results.length} public packages; 3 hidden companion Skills.`);
+const packages = entries.map(([id,title,description,dependencies,internal,runtime,repo=id]) => ({id,title,description,dependencies,internal,hidden:['slide-copy','storytelling','sparkling'].includes(id),runtime:runtime||null,repository:`thePlannerIvan/${repo}`,channel:'main',available:true}));
+await writeFile(new URL('../catalog.json',import.meta.url),JSON.stringify({schema:2,generatedAt:new Date().toISOString(),channel:'main',packages},null,2)+'\n');
+console.log(`Wrote ${packages.length} packages (no pinned revisions); 3 hidden companion Skills.`);

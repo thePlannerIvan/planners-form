@@ -1,6 +1,30 @@
 # Compatibility record
 
-Checked: 2026-10-17
+Checked: 2026-10-20
+
+## 0.2.0 — latest-tracking installs, self-update, diagnostic prompt (2026-10-20)
+
+0.2.0 changes where versions come from and what the settings page can repair:
+
+- **No pinned revisions.** `catalog.json` is metadata only (schema 2). Every install and update resolves the repository's current `main` commit at action time through `lib/upstream.js`: git's ref advertisement first, commits Atom second, REST API only as a last resort. The REST API's 60-requests-per-hour unauthenticated limit is no longer on the critical path; the previous behaviour produced `403` for every package behind a shared proxy.
+- **Checks no longer block updates.** Checks cover only installed Skills plus the plugin itself, report per-item errors, and never gate `update`/`update-all`. A single unreachable repository skips that item instead of failing the whole run.
+- **Plugin self-update.** When the host exposes the official `pluginManager` service, the settings page calls `installBundle('github:thePlannerIvan/planners-form#<sha>')`, which owns the pnpm call, the profile lock, the manifest/lock backup and HMR re-composition. Otherwise the page offers a copyable update prompt for the user's agent (`plugin_manager` tool or the application's bundled CLI). Desktop requires a restart for a fully applied update.
+- **Diagnostic prompt.** `POST {"action":"diagnose","kind":"fix"|"update"}` returns a paste-ready prompt plus a redacted snapshot (plugin/profile/paths/environments/skills/job/network-facing errors). Tokens, cookies and credential-shaped strings are stripped; absolute paths and recent logs are included by design because the user explicitly copies the text. The repair prompt ends with an email fallback to Lawyif@163.com for cases the agent cannot fix or optimization findings.
+- **Profile discovered from the install path.** The plugin process does not inherit `DSH_PROFILE`/`DSH_PROFILE_DIR`; 0.2.0 derives the profile from `<…>/profiles/<name>/node_modules/…` (including pnpm virtual-store layouts) and falls back to scanning `$DSH_HOME/profiles`, so the prompt no longer reports `profile: unknown`/`mode: unknown`. A locally installed build that is newer than the latest release is reported as `ahead` (本地预览版) instead of looking updateable.
+- **Bundled Review Dock 0.2.5.** The vendored dock moves 0.2.4 → 0.2.5 (same-origin review frames) and the stale `0.2.3` marker in `package-lock.json` is corrected.
+
+Verification performed for this release (no paid model requests):
+
+| Check | Result |
+|---|---|
+| `npm test` | 56 tests: 55 pass, 1 skipped (`DSH_TEST_RUNTIME` integration), 0 fail |
+| `npm run check` | all `lib/*.js` parse |
+| Live resolver, real network | `resolveCommit('thePlannerIvan/planners-form','main')` → `3ab093c…`; `resolveRelease` → `v0.1.4`; no `api.github.com` quota consumed |
+| Install/update/repair plan | latest resolution used for install/update; repair restores the recorded revision; external installs untouched |
+| Self-update delegation | unit-tested with a stubbed host `installBundle` (spec `github:…#<sha>`, result recorded in `state.json`, failure leaves the previous install intact) |
+| Settings UI | renders plugin version row, self-update/update-prompt/diagnose controls; hidden companion Skills stay hidden |
+
+Not yet verified live: an actual self-update against the running desktop host (needs a published newer commit and a restart), the bundled-CLI fallback path with sandbox approvals, and the diagnostic prompt being executed end-to-end by an agent. Those are recorded as follow-ups rather than claimed results.
 
 ## Release target: DSH 0.2.x
 

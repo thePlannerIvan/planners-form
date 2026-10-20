@@ -1,7 +1,7 @@
 {
   "name": "planners-form",
-  "version": "0.1.4",
-  "description": "DSH 设置中的 Planners 套件管理：环境准备、Skill 选装与更新。",
+  "version": "0.2.0",
+  "description": "DSH 设置中的 Planners 套件管理：跟随上游最新版本的 Skill 选装与更新、插件自更新、可复制的诊断修复指令。",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -26,7 +26,7 @@
   },
   "scripts": {
     "test": "node --test test/*.test.mjs",
-    "check": "node --check lib/index.js && node --check lib/manager.js && node --check lib/client.js"
+    "check": "node --check lib/index.js && node --check lib/manager.js && node --check lib/client.js && node --check lib/upstream.js && node --check lib/diagnostics.js"
   },
   "dependencies": {
     "dsh-review-dock": "file:vendor/review-dock",

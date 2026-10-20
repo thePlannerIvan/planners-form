@@ -21,7 +21,13 @@ skills/
 
 有效的外部 Skill 不覆盖、不接管；没有有效 Skill 的同名目录会提示冲突。公共外部模块会建立只读使用的链接，供受管理 Skill 找到兄弟依赖。
 
-初次安装使用 `catalog.json` 固定提交。检查更新查询上游主分支，用户点击更新后采用查询到的具体提交；**这表示上游更新，不表示整套兼容认证**。建议在任务空闲时更新，已有 Agent 上下文不会被重写。
+初次安装与更新都直接取上游 `main` 的最新提交：`lib/upstream.js` 先走 git 的 ref 广告（`info/refs?service=git-upload-pack`），失败再走 commits Atom，最后才用 GitHub REST API 兜底。**不占用 API 配额**，因此共享代理出口也不会再出现“检查更新全部 403”。解析到 SHA 之后仍按 SHA 下载并校验，所以检查与下载之间分支移动不会拿到不同字节。`catalog.json` 只保存元数据（ID、标题、依赖、仓库、运行时），不再固定 revision。**这表示上游更新，不表示整套兼容认证**。建议在任务空闲时更新，已有 Agent 上下文不会被重写。
+
+`repair` 恢复“已记录的那一版”，不主动升级；`install` 不会顺手升级已受管理的共享依赖；`update-all` 单项失败只跳过该项，不再整体回滚。
+
+插件自身的更新同样先查上游 `main` 与最新 Release（`releases.atom`）。宿主提供 `pluginManager` 服务时，设置页的“更新插件”调用宿主的 `installBundle('github:thePlannerIvan/planners-form#<sha>')`，由宿主负责 pnpm、profile 锁、manifest 备份与 HMR 重组合；没有该服务（或本地开发安装）时，降级为“复制更新指令”，交给用户的 Agent 按官方 `plugin_manager` 工具或应用自带 CLI 执行。桌面版更新后必须重启 DSH 才会完全生效。
+
+设置页的“复制修复指令给 Agent”会生成一份含现场、错误、脱敏快照、分类处置与验收标准的 Prompt；诊断只读取本机状态，不含 token、cookie 或密钥，但会包含路径与最近日志，由用户决定是否发送。
 
 更新不访问项目目录。安装失败会恢复先前 Skill 文件与状态；Python 环境安装是独立准备步骤，失败可重试，不回滚 pip 缓存。
 

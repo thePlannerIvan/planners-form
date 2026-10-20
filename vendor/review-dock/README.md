@@ -145,15 +145,15 @@ if (hasPromptRequest(agent, request.requestId)) return { accepted: true }   // �
 
 ### 为什么资产与桥都走"宿主递字节"，而不是让页面自己去取
 
-**因为页面在 DSH 里是一个不透明源（opaque origin）的 iframe。**
+**因为页面在 DSH 里是一个 `sandbox="allow-scripts allow-same-origin"` 的 iframe（0.2.5 起）。**
 
-实测（Chromium，见下）：不透明帧自己发起的**任何**子资源请求，到达宿主时都带着
+历史实测（opaque 时代）表明：不透明帧自己发起的**任何**子资源请求，到达宿主时都带着
 
 ```text
 Sec-Fetch-Site: cross-site        Cookie: absent
 ```
 
-`/api` 上的信任栅栏对 cross-site 一律 **403（在认证之前）**，所以：
+`/api` 上的信任栅栏对 cross-site 一律 **403（在认证之前）**。同源之后页面本可直接取，但桥仍保留“宿主递字节”的契约，避免页面依赖 DSH 的 cookie 与路由细节：
 
 - `<img src="/api/review.asset?…">` → 403，且**不带 cookie**；
 - `<script src="/api/review.bridge">` → 同样的 403。
@@ -300,7 +300,7 @@ ln -sfn /path/to/dsh-review-dock ~/.dsh/profiles/web/node_modules/dsh-review-doc
 - **宿主只送规范拼法 `review/changed`**：桥也认它。桥对旧拼法 `changed` 容忍但会 `console.warn`，对任何不认识的 `review/*` 类型也会出声 —— 这条线最坏的失败方式是**静默**（页面一动不动、零报错），所以两边都不许安静。
 - **上传有上限（16 MiB）**：见上一节 —— 这是相对无插件宿主**有意收紧**的一处，理由是字节要经过面板中继；超限是明确的 413，不是静默截断。
 - **`?surface=` 接受任意绝对路径**：保护来自"必须带浏览器会话 cookie" + "只送 `dir` 树内、realpath 校验"。
-- **真正的隔离边界是浏览器沙箱**：页面是 `sandbox="allow-scripts"` 的不透明源，读不到应用 DOM / storage / API（实测连 `document.cookie` 都抛 `SecurityError`）。
+- **隔离边界已调整（0.2.5）**：页面使用 `sandbox="allow-scripts allow-same-origin"`，因此可以运行 HyperFrames 播放器这类需要内层同源 iframe 的工程态预览；代价是**审阅页被视为可信代码**，能访问 DSH 应用的 DOM / storage / API。只应在审阅页来源可信时使用。
 - **多会话并行**：`/api/review.current` 按 `sessionId` 读取各自的 surface、revision 与变化戳；两个会话可以同时打开不同审阅面。侧栏不再用跨会话的浏览器缓存记忆 surface，切换会话时不会继承另一会话的面。
 - **页面作者要自己写"变了怎么办"**：宿主只负责把 `changed` 送进去，不负责页面怎么响应，也不碰人的输入状态。
 
