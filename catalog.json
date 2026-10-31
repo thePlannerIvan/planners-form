@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generatedAt": "2026-10-20T09:49:38.558Z",
+  "generatedAt": "2026-10-31T11:54:59.557Z",
   "channel": "main",
   "packages": [
     {
@@ -9,6 +9,7 @@
       "description": "公共审阅通信与页面宿主",
       "dependencies": [],
       "internal": true,
+      "hidden": false,
       "runtime": null,
       "repository": "thePlannerIvan/planners-review-core",
       "channel": "main",
@@ -20,6 +21,7 @@
       "description": "保存资料来源与定位",
       "dependencies": [],
       "internal": true,
+      "hidden": false,
       "runtime": null,
       "repository": "thePlannerIvan/planners-source-index",
       "channel": "main",
@@ -31,6 +33,7 @@
       "description": "统一生成离线报告",
       "dependencies": [],
       "internal": true,
+      "hidden": false,
       "runtime": null,
       "repository": "thePlannerIvan/planners-report-kit",
       "channel": "main",
@@ -44,6 +47,7 @@
         "planners-source-index"
       ],
       "internal": true,
+      "hidden": false,
       "runtime": null,
       "repository": "thePlannerIvan/planners-fact-check",
       "channel": "main",
@@ -55,6 +59,7 @@
       "description": "共享策略与研究方法",
       "dependencies": [],
       "internal": true,
+      "hidden": false,
       "runtime": null,
       "repository": "thePlannerIvan/planners-method-wiki",
       "channel": "main",
@@ -71,6 +76,7 @@
         "planners-report-kit"
       ],
       "internal": false,
+      "hidden": false,
       "runtime": "ppt",
       "repository": "thePlannerIvan/planners-ppt-hell",
       "channel": "main",
@@ -89,6 +95,7 @@
         "slide-copy"
       ],
       "internal": false,
+      "hidden": false,
       "runtime": null,
       "repository": "thePlannerIvan/Planners-Proposal-System",
       "channel": "main",
@@ -107,8 +114,23 @@
         "slide-copy"
       ],
       "internal": false,
+      "hidden": false,
       "runtime": null,
       "repository": "thePlannerIvan/planners-bypage",
+      "channel": "main",
+      "available": true
+    },
+    {
+      "id": "editor",
+      "title": "文章校对",
+      "description": "全文可编辑的修订页：点绿同意、点红不改、未点默认接受",
+      "dependencies": [
+        "planners-review-core"
+      ],
+      "internal": false,
+      "hidden": false,
+      "runtime": null,
+      "repository": "thePlannerIvan/editor",
       "channel": "main",
       "available": true
     },
@@ -121,6 +143,7 @@
         "planners-report-kit"
       ],
       "internal": false,
+      "hidden": false,
       "runtime": null,
       "repository": "thePlannerIvan/planners-quali-box",
       "channel": "main",
@@ -135,8 +158,45 @@
         "planners-report-kit"
       ],
       "internal": false,
+      "hidden": false,
       "runtime": null,
       "repository": "thePlannerIvan/planners-quanti-box",
+      "channel": "main",
+      "available": true
+    },
+    {
+      "id": "slide-copy",
+      "title": "幻灯片文案",
+      "description": "页面角色、标题链与文案规范",
+      "dependencies": [],
+      "internal": true,
+      "hidden": true,
+      "runtime": null,
+      "repository": "thePlannerIvan/slide-copy",
+      "channel": "main",
+      "available": true
+    },
+    {
+      "id": "storytelling",
+      "title": "叙事方法",
+      "description": "组织叙事推进与认知节奏",
+      "dependencies": [],
+      "internal": true,
+      "hidden": true,
+      "runtime": null,
+      "repository": "thePlannerIvan/storytelling",
+      "channel": "main",
+      "available": true
+    },
+    {
+      "id": "sparkling",
+      "title": "策略研讨",
+      "description": "围绕材料共创业务判断",
+      "dependencies": [],
+      "internal": true,
+      "hidden": true,
+      "runtime": null,
+      "repository": "thePlannerIvan/sparkling",
       "channel": "main",
       "available": true
     },
@@ -149,11 +209,11 @@
         "planners-source-index"
       ],
       "internal": false,
-      "available": true,
+      "hidden": false,
+      "runtime": null,
       "repository": "thePlannerIvan/video-idea-system",
       "channel": "main",
-      "runtime": null,
-      "hidden": false
+      "available": true
     },
     {
       "id": "video-craft",
@@ -163,47 +223,11 @@
         "planners-review-core"
       ],
       "internal": false,
-      "available": true,
+      "hidden": false,
+      "runtime": null,
       "repository": "thePlannerIvan/video-craft",
       "channel": "main",
-      "runtime": null,
-      "hidden": false
-    },
-    {
-      "id": "slide-copy",
-      "title": "幻灯片文案",
-      "description": "页面角色、标题链与文案规范",
-      "dependencies": [],
-      "internal": true,
-      "available": true,
-      "repository": "thePlannerIvan/slide-copy",
-      "channel": "main",
-      "runtime": null,
-      "hidden": true
-    },
-    {
-      "id": "storytelling",
-      "title": "叙事方法",
-      "description": "组织叙事推进与认知节奏",
-      "dependencies": [],
-      "internal": true,
-      "available": true,
-      "repository": "thePlannerIvan/storytelling",
-      "channel": "main",
-      "runtime": null,
-      "hidden": true
-    },
-    {
-      "id": "sparkling",
-      "title": "策略研讨",
-      "description": "围绕材料共创业务判断",
-      "dependencies": [],
-      "internal": true,
-      "available": true,
-      "repository": "thePlannerIvan/sparkling",
-      "channel": "main",
-      "runtime": null,
-      "hidden": true
+      "available": true
     }
   ]
 }

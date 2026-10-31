@@ -62,6 +62,7 @@ https://github.com/thePlannerIvan/planners-form
 | --- | --- |
 | 讨论策略、组织方案主线 | `planners-proposal-system` |
 | 写完整的逐页内容 | `planners-bypage` |
+| 校对文章、检查错别字与表达 | `editor` |
 | 制作和修改可编辑 PPT | `planners-ppt-hell` |
 | 分析访谈、评论与开放文本 | `planners-quali-box` |
 | 分析表格与结构化数据 | `planners-quanti-box` |

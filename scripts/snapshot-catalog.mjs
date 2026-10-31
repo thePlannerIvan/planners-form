@@ -14,6 +14,7 @@ const entries = [
  ['planners-ppt-hell','PPT 制作','从材料生成可编辑 PPT',['planners-review-core','planners-source-index','planners-fact-check','planners-report-kit'],false,'ppt'],
  ['planners-proposal-system','策略提案','共创策略判断与方案结构',['planners-review-core','planners-source-index','planners-method-wiki','sparkling','storytelling','slide-copy'],false,null,'Planners-Proposal-System'],
  ['planners-bypage','逐页内容','展开逐页文案、素材与来源',['planners-review-core','planners-source-index','planners-fact-check','planners-method-wiki','storytelling','slide-copy'],false],
+ ['editor','文章校对','全文可编辑的修订页：点绿同意、点红不改、未点默认接受',['planners-review-core'],false],
  ['planners-quali-box','定性分析','分析访谈与开放文本',['planners-source-index','planners-report-kit'],false],
  ['planners-quanti-box','定量分析','分析结构化数据并生成报告',['planners-source-index','planners-report-kit'],false],
  ['slide-copy','幻灯片文案','页面角色、标题链与文案规范',[],true],
